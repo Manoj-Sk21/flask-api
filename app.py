@@ -2,13 +2,14 @@ import os
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 app=Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+db_url=os.environ.get('DATABASE_URL','sqlite:///db.sqlite3')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 db = SQLAlchemy(app)
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     company = db.Column(db.String(200), nullable=False)
-    location=db.Column(db.string(100),nullable=False)
+    location=db.Column(db.String(100),nullable=False)
     
     def to_dict(self):
         return {
